@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package RTRAM;
+
+service RawData {
+  rpc UpdateHistory(RawTopic) returns (Flag) {}
+}
+
+service MakeInputs {
+  rpc CheckFrame(TimeRequest) returns (Flag) {}
+  rpc GetHistory(TimeRequest) returns (RawTopic) {}
+  rpc UpdateGrid(GridTopic) returns (Flag) {}
+}
+
+service NetworkForward {
+  rpc CheckFrame(TimeRequest) returns (Flag) {}
+  rpc GetGrid(TimeRequest) returns (GridTopic) {}
+  rpc UpdatePred(PredTopic) returns (Flag) {}
+}
+
+service RiskAssessment {
+  rpc CheckFrame(TimeRequest) returns (Flag) {}
+  rpc GetPred(TimeRequest) returns (PredTopic) {}
+  rpc UpdateRisk(RiskTopic) returns (Flag) {}
+}
+
+service Visualize {
+  rpc CheckFrame(TimeRequest) returns (Flag) {}
+  rpc GetRisk(TimeRequest) returns (RiskTopic) {}
+  rpc GetPred(TimeRequest) returns (PredTopic) {}
+  rpc GetGrid(TimeRequest) returns (GridTopic) {}
+  rpc GetHistory(TimeRequest) returns (RawTopic) {}
+}
+
+message Flag {
+  int32 flag = 1;
+}
+
+message TimeRequest {
+  int32 frame = 1;
+}
+
+message RawTopic {
+  int32 frame = 1;
+  bytes image = 2;
+  bytes ego = 3;
+  bytes nbr = 4;
+  int32 n_veh = 5;
+  int32 ego_id = 6;
+  int32 collision_other_id = 7;
+}
+
+message GridTopic {
+  int32 frame = 1;
+  bytes trajectory = 2;
+  bytes scene = 3;
+  bytes veh_ids = 4;
+  int32 n_veh = 5;
+  int32 ego_id = 6;
+}
+
+message PredTopic {
+  int32 frame = 1;
+  bytes pred_trajectory = 2;
+  bytes veh_ids = 3;
+  bytes scene = 4;
+  int32 n_veh = 5;
+  int32 ego_i = 6;
+}
+
+message RiskTopic {
+  int32 frame = 1;
+  bytes risk = 2;
+  int32 n_collision = 3;
+  int32 ego_id = 4;
+}
